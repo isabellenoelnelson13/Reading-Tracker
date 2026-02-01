@@ -1,0 +1,180 @@
+html, body, #root { height: 100%; }
+body { margin: 0; }
+
+/* Cozy palette + typography */
+:root{
+
+  --rt-shadow: 0 10px 30px rgba(31,41,55,0.10);
+  --rt-accent: #6f7f76;
+  --rt-accent-strong: #5f6f67;
+  --rt-accent-soft: #dde4df;
+
+  /* Text */
+  --rt-ink: #1f2937;
+  --rt-muted: #6b7280;
+
+  /* Surfaces */
+  --rt-bg: #fbf6ee;
+  --rt-card: rgba(255,255,255,0.72);
+  --rt-border: rgba(31,41,55,0.14);
+
+}
+
+body{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--rt-ink);
+  /* background shows everywhere */
+  background: radial-gradient(1200px 600px at 20% 0%, rgba(15,118,110,0.10), transparent 60%),
+  radial-gradient(900px 500px at 90% 10%, rgba(217,119,6,0.10), transparent 55%),
+  var(--rt-bg);
+}
+
+.rt-title{
+  font-family: "Source Serif 4", serif;
+  letter-spacing: -0.02em;
+}
+
+.rt-subtitle{
+  color: var(--rt-muted);
+}
+
+.rt-card{
+  background: var(--rt-card);
+  border: 1px solid var(--rt-border);
+  box-shadow: var(--rt-shadow);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.rt-divider{
+  border-color: var(--rt-border);
+}
+
+/* PrimeReact primary color override */
+.p-button {
+  background: var(--rt-accent);
+  border-color: var(--rt-accent);
+}
+
+.p-button:hover {
+  background: var(--rt-accent-strong);
+  border-color: var(--rt-accent-strong);
+}
+
+/* Tab highlight */
+.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+  color: var(--rt-accent);
+  border-color: var(--rt-accent);
+}
+
+/* Dropdown focus */
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--rt-accent);
+  box-shadow: 0 0 0 2px var(--rt-accent-soft);
+}
+
+/* Input focus */
+.p-inputtext:focus {
+  border-color: var(--rt-accent);
+  box-shadow: 0 0 0 2px var(--rt-accent-soft);
+}
+
+/* Tags */
+.p-tag {
+  background: var(--rt-accent-soft);
+  color: var(--rt-accent-strong);
+}
+
+/* Rating stars */
+.p-rating .p-rating-icon.p-rating-icon-active {
+  color: var(--rt-accent);
+}
+
+.p-button-danger {
+  background: #b56c6c !important;
+  border-color: #b56c6c !important;
+  color: white;
+}
+
+.rt-chip{
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  line-height: 1;
+  background: var(--rt-accent-soft);
+  color: var(--rt-accent-strong);
+  border: 1px solid var(--rt-border);
+  width: fit-content;
+}
+
+.rt-icon-btn .p-button-icon {
+  font-size: 0.9rem;
+}
+.rt-icon-btn.p-button {
+  padding: 0.35rem;
+}
+
+/* Portrait book cover */
+.rt-book-cover {
+  width: 96px;        /* tweak size here */
+  aspect-ratio: 2 / 3; /* portrait ratio */
+  background: var(--surface-100);
+  border: 1px solid var(--surface-border);
+  flex-shrink: 0;
+}
+
+/* Fallback when no cover image */
+.rt-book-cover-fallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e8efe9, #f5f9f6);
+  color: var(--rt-accent-strong);
+  font-weight: 700;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* NavBar buttons — sage green */
+.rt-nav .p-button.p-button-text {
+  color: var(--rt-accent-strong);
+}
+
+.rt-nav .p-button.p-button-text:hover {
+  background: rgba(120, 135, 124, 0.12); /* soft sage hover */
+}
+
+/* make the kebab button subtle */
+.rt-card .p-button.p-button-text {
+  border-radius: 999px;
+}
+
+
+
+/* Kebab menu icon — sage green */
+.rt-kebab-btn.p-button {
+  color: var(--rt-accent-strong);
+  background: transparent !important;
+  border: none !important;
+  padding: 0.25rem;
+  width: auto;
+  height: auto;
+}
+
+.rt-kebab-btn .p-button-icon {
+  font-size: 1.1rem;
+  opacity: 0.75;
+  transition: opacity 0.15s ease, transform 0.12s ease;
+}
+
+.rt-kebab-btn:hover .p-button-icon {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.rt-kebab-btn:focus {
+  box-shadow: none;
+}

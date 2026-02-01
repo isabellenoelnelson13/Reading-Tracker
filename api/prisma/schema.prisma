@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Item {
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime @default(now())
+}
+
+enum Shelf {
+  TO_READ
+  READ
+  UPCOMING
+}
+
+model Book {
+  id     String  @id @default(cuid())
+  title  String
+  author String?
+  shelf  String
+
+  coverUrl String?
+
+  releaseDate DateTime?
+  finishedAt  DateTime?
+  rating      Int?
+
+  genres Json @default("[]") // ✅ array of strings stored as JSON
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
