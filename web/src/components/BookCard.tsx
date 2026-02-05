@@ -1,9 +1,10 @@
 import type { Book, Shelf } from "../types/books"
 import { Tag } from "primereact/tag"
 import { Button } from "primereact/button"
-import { Rating } from "primereact/rating"
 import BookCover from "./BookCover"
 import EditGenresDialog from "./EditGenresDialog"
+import MarkAsReadDialog from "./MarkAsReadDialog"
+import HalfStarRating from "./HalfStarRating"
 import { useRef, useState } from "react"
 import { Menu } from "primereact/menu"
 import type { MenuItem } from "primereact/menuitem"
@@ -34,7 +35,7 @@ function shelfLabel(shelf: Shelf) {
 export default function BookCard({
                                      book,
                                      onMove,
-                                     onMarkRead,
+                                     onMarkReadWithReview,
                                      onSetRating,
                                      onDelete,
                                      onUpdateGenres,
@@ -42,7 +43,7 @@ export default function BookCard({
                                  }: {
     book: Book
     onMove: (id: string, shelf: Shelf) => Promise<void>
-    onMarkRead: (id: string, finishedAtISODateOnly: string) => Promise<void>
+    onMarkReadWithReview: (id: string, finishedAt: string, rating: number | null, review: string | null) => Promise<void>
     onSetRating: (id: string, rating: number | null) => Promise<void>
     onDelete: (id: string) => Promise<void>
     onUpdateGenres: (id: string, genres: string[]) => Promise<void>
@@ -51,6 +52,7 @@ export default function BookCard({
 }) {
     const genres = Array.isArray((book as any).genres) ? (book as any).genres as string[] : []
     const [editOpen, setEditOpen] = useState(false)
+    const [markReadOpen, setMarkReadOpen] = useState(false)
 
     const menuRef = useRef<Menu>(null)
     const [isBusy, setIsBusy] = useState(false)
@@ -94,7 +96,7 @@ export default function BookCard({
                 },
                 {
                     label: "Read",
-                    command: () => run(() => onMove(book.id, "READ")),
+                    command: () => setMarkReadOpen(true),
                 },
             ],
         },
@@ -104,7 +106,7 @@ export default function BookCard({
                 {
                     label: "Mark as read",
                     icon: "pi pi-check",
-                    command: () => run(() => onMarkRead(book.id, todayISODateOnly())),
+                    command: () => setMarkReadOpen(true),
                 },
             ]
             : []),
@@ -217,11 +219,27 @@ export default function BookCard({
                         {book.shelf === "READ" && (
                             <div className="flex align-items-center gap-2">
                                 <span className="text-sm font-medium text-color-secondary">Rating</span>
-                                <Rating
-                                    value={book.rating ?? 0}
+                                <HalfStarRating
+                                    value={book.rating}
                                     cancel
-                                    onChange={(e) => onSetRating(book.id, e.value ? Number(e.value) : null)}
+                                    onChange={(val) => onSetRating(book.id, val)}
                                 />
+                            </div>
+                        )}
+
+                        {book.shelf === "READ" && book.review && (
+                            <div
+                                className="text-sm text-color-secondary"
+                                style={{
+                                    fontStyle: "italic",
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 3,
+                                    WebkitBoxOrient: "vertical",
+                                    overflow: "hidden",
+                                    lineHeight: 1.5,
+                                }}
+                            >
+                                {book.review}
                             </div>
                         )}
                     </div>
@@ -234,6 +252,15 @@ export default function BookCard({
                 onClose={() => setEditOpen(false)}
                 onSave={async (next) => {
                     await onUpdateGenres(book.id, next)
+                }}
+            />
+            <MarkAsReadDialog
+                open={markReadOpen}
+                title={book.title}
+                author={book.author}
+                onClose={() => setMarkReadOpen(false)}
+                onSave={async ({ rating, review }) => {
+                    await onMarkReadWithReview(book.id, todayISODateOnly(), rating, review)
                 }}
             />
 

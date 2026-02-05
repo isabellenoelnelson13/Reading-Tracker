@@ -86,6 +86,7 @@ export const BookScalarFieldEnum = {
   releaseDate: 'releaseDate',
   finishedAt: 'finishedAt',
   rating: 'rating',
+  review: 'review',
   genres: 'genres',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

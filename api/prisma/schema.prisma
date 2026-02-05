@@ -35,7 +35,8 @@ model Book {
 
   releaseDate DateTime?
   finishedAt  DateTime?
-  rating      Int?
+  rating      Float?
+  review      String?
 
   genres Json @default("[]") // ✅ array of strings stored as JSON
 

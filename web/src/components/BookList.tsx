@@ -10,7 +10,6 @@ export default function BookList({
                                      isLoading,
                                      emptyLabel,
                                      onMove,
-                                     onMarkRead,
                                      onSetRating,
                                      onDelete,
                                      actions,
@@ -19,14 +18,13 @@ export default function BookList({
     isLoading: boolean
     emptyLabel: string
     onMove: (id: string, shelf: Shelf) => Promise<void>
-    onMarkRead: (id: string, finishedAtISODateOnly: string) => Promise<void>
     onSetRating: (id: string, rating: number | null) => Promise<void>
     onDelete: (id: string) => Promise<void>
     actions: {
         updateBook: (id: string, patch: { genres?: string[] }) => Promise<void>
         fetchCover: (id: string) => Promise<void>
         moveBook: (id: string, shelf: Shelf) => Promise<void>
-        markRead: (id: string, finishedAtISODateOnly: string) => Promise<void>
+        markReadWithReview: (id: string, finishedAt: string, rating: number | null, review: string | null) => Promise<void>
         setRating: (id: string, rating: number | null) => Promise<void>
         deleteBook: (id: string) => Promise<void>
     }
@@ -57,7 +55,7 @@ export default function BookList({
                     key={b.id}
                     book={b}
                     onMove={onMove}
-                    onMarkRead={onMarkRead}
+                    onMarkReadWithReview={actions.markReadWithReview}
                     onSetRating={onSetRating}
                     onDelete={onDelete}
                     onUpdateGenres={async (id: string, genres: string[]) => actions.updateBook(id, { genres })}

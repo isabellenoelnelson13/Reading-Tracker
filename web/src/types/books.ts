@@ -9,6 +9,7 @@ export type Book = {
     finishedAt: string | null
     coverUrl: string | null
     rating: number | null
+    review: string | null
     genres: string[] | null
     createdAt: string
     updatedAt: string

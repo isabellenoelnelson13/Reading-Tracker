@@ -8,6 +8,18 @@ function parseGenres(value: any): string[] {
     return value.map((g) => String(g).trim()).filter(Boolean)
 }
 
+async function promoteReleasedBooks() {
+    const now = new Date()
+    now.setHours(23, 59, 59, 999)
+    await prisma.book.updateMany({
+        where: {
+            shelf: "UPCOMING",
+            releaseDate: { lte: now },
+        },
+        data: { shelf: "TO_READ" },
+    })
+}
+
 async function fetchCoverUrl(title: string, author: string | null): Promise<string | null> {
     const q = [
         `intitle:${title}`,
@@ -45,6 +57,8 @@ async function fetchCoverUrl(title: string, author: string | null): Promise<stri
 
 
 booksRouter.get("/", async (req, res) => {
+    await promoteReleasedBooks()
+
     const shelf = String(req.query.shelf ?? "").trim()
     const where = shelf ? { shelf: shelf as any } : {}
 
@@ -80,6 +94,7 @@ booksRouter.post("/", async (req, res) => {
     const releaseDate = req.body?.releaseDate ? new Date(req.body.releaseDate) : null
     const finishedAt = req.body?.finishedAt ? new Date(req.body.finishedAt) : null
     const rating = req.body?.rating != null ? Number(req.body.rating) : null
+    const review = req.body?.review ? String(req.body.review).trim() : null
 
     const coverUrl = await fetchCoverUrl(title, author)
 
@@ -94,6 +109,7 @@ booksRouter.post("/", async (req, res) => {
             releaseDate,
             finishedAt,
             rating,
+            review,
         },
     })
 
@@ -125,6 +141,9 @@ booksRouter.patch("/:id", async (req, res) => {
 
     if (req.body?.rating !== undefined)
         data.rating = req.body.rating == null ? null : Number(req.body.rating)
+
+    if (req.body?.review !== undefined)
+        data.review = req.body.review ? String(req.body.review).trim() : null
 
     const book = await prisma.book.update({ where: { id }, data })
     res.json(book)

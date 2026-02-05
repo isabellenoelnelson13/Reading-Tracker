@@ -151,7 +151,7 @@ export function useBooksApi(activeShelf: Shelf) {
 
     async function updateBook(
         bookId: string,
-        patch: { genres?: string[]; title?: string; author?: string | null; shelf?: Shelf; releaseDate?: string | null; finishedAt?: string | null; rating?: number | null }
+        patch: { genres?: string[]; title?: string; author?: string | null; shelf?: Shelf; releaseDate?: string | null; finishedAt?: string | null; rating?: number | null; review?: string | null }
     ) {
         setError(null)
         await api<Book>(`/api/books/${bookId}`, {
@@ -169,6 +169,22 @@ export function useBooksApi(activeShelf: Shelf) {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ shelf: "READ", finishedAt: finishedAtISODateOnly }),
+        })
+        await Promise.all([loadBooks(activeShelf), refreshCounts()])
+        toast.show("Marked as read.", "success")
+    }
+
+    async function markReadWithReview(
+        bookId: string,
+        finishedAt: string,
+        rating: number | null,
+        review: string | null
+    ) {
+        setError(null)
+        await api<Book>(`/api/books/${bookId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ shelf: "READ", finishedAt, rating, review }),
         })
         await Promise.all([loadBooks(activeShelf), refreshCounts()])
         toast.show("Marked as read.", "success")
@@ -204,6 +220,6 @@ export function useBooksApi(activeShelf: Shelf) {
         stats,
         isLoading,
         error,
-        actions: { addBook, moveBook, markRead, setRating, deleteBook, reload: loadBooks, updateBook, fetchCover },
+        actions: { addBook, moveBook, markRead, markReadWithReview, setRating, deleteBook, reload: loadBooks, updateBook, fetchCover },
     }
 }

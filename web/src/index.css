@@ -178,3 +178,62 @@ body{
 .rt-kebab-btn:focus {
   box-shadow: none;
 }
+
+/* ── HalfStarRating ── */
+.rt-half-star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rt-hsr-cancel {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--rt-muted);
+  font-size: 1rem;
+  padding: 2px 4px;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.rt-hsr-cancel:hover { opacity: 1; }
+
+.rt-hsr-star {
+  position: relative;
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.rt-hsr-empty {
+  color: var(--rt-muted);
+  opacity: 0.3;
+}
+
+.rt-hsr-filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--rt-accent);
+}
+
+.rt-hsr-half {
+  clip-path: inset(0 50% 0 0);
+}
+
+.rt-hsr-target {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+.rt-hsr-target-left { left: 0; }
+.rt-hsr-target-right { right: 0; }
